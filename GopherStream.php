@@ -50,7 +50,10 @@ class GopherStream {
 					fclose($client);
 					return false;
 				}
-				$dir[] = $elements[1];
+
+				/* Construct a valid relative URL with file
+				 * type included. */
+				$dir[] = '/'.$elements[0][0].$elements[1];
 			}
 		}
 
