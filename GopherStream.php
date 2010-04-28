@@ -29,7 +29,14 @@ class GopherStream {
 			return false;
 		}
 
-		fwrite($client, self::normaliseRequest($parts['path'])."\r\n");
+		if (isset($parts['path'])) {
+			$path = self::normaliseRequest($parts['path']);
+		}
+		else {
+			$path = '';
+		}
+
+		fwrite($client, "$path\r\n");
 
 		/* The spec requires CRLF, but we'll split just on LF and trim
 		 * later to cover any non-compliant implementations. */
@@ -102,7 +109,14 @@ class GopherStream {
 			return false;
 		}
 
-		fwrite($this->socket, self::normaliseRequest($parts['path'])."\r\n");
+		if (isset($parts['path'])) {
+			$path = self::normaliseRequest($parts['path']);
+		}
+		else {
+			$path = '';
+		}
+
+		fwrite($this->socket, "$path\r\n");
 
 		if ($options & STREAM_USE_PATH) {
 			$openedPath = $path;
