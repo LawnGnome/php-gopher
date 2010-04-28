@@ -1,0 +1,51 @@
+php-gopher 0.1
+http://github.com/LawnGnome/php-gopher
+
+
+I. WHAT IS THIS?
+
+It's a stream wrapper implementing Gopher support in PHP.
+
+
+II. UH, WHY?
+
+Why not? I like Gopher.
+
+
+III. NO, SERIOUSLY, WHY?
+
+Well, I wrote a Gopher interface for Wordpress a while back and thought it'd be
+nice if I could interact with it.
+
+
+IV. OH, THAT MAKES COMPLETE... WAIT, A GOPHER INTERFACE TO WORDPRESS?!
+
+Yep! You can get it at http://github.com/LawnGnome/wp-gopher.
+
+
+V. OK THEN. WHAT DOES THIS REQUIRE?
+
+PHP 5.3, since I've stopped caring about versions of PHP where I can't use
+anonymous functions.
+
+
+VI. HOW DO I USE IT?
+
+There's a demo file called demo.php, but the short version is: include
+GopherStream.php and open something with a Gopher URL. There's even opendir()
+support, although it's kind of useless.
+
+There's also quite a bit of inline documentation. You can run phpDocumentor
+over GopherStream.php to extract it, if you like, although you probably don't
+need to.
+
+
+VII. SHOULDN'T THERE BE TESTS OR SOMETHING?
+
+Probably, but I didn't feel like writing a mock Gopher server.
+
+
+VIII. I HAVE A BUG REPORT/FEATURE SUGGESTION/SOME CRACK, SINCE YOU'RE CLEARLY
+      ON DRUGS ANYWAY.
+
+Lodge a report on GitHub and it will be dealt with appropriately.
