@@ -3,12 +3,12 @@
 class GopherStream {
 	public $context;
 
-	protected $client;
 	protected $dir;
+	protected $socket;
 
 	public function __construct() {
-		$this->client = null;
 		$this->dir = null;
+		$this->socket = null;
 	}
 
 	public function dir_closedir() {
@@ -91,21 +91,18 @@ class GopherStream {
 
 		$parts = self::parseURL($path);
 
-		if ($this->client) {
-			fclose($this->client);
+		if ($this->socket) {
+			fclose($this->socket);
 		}
 
-		$this->client = stream_socket_client($parts['host'].':'.$parts['port']);
+		$this->socket = stream_socket_client($parts['host'].':'.$parts['port']);
 
-		if (!$this->client) {
+		if (!$this->socket) {
 			$warning('Unable to open TCP socket client');
 			return false;
 		}
 
-		/* Send the actual request. We need to remove any prefixed
-		 * Gopher file type, since it's not sent as part of the actual
-		 * request. */
-		fwrite($this->client, self::normaliseRequest($parts['path'])."\r\n");
+		fwrite($this->socket, self::normaliseRequest($parts['path'])."\r\n");
 
 		if ($options & STREAM_USE_PATH) {
 			$openedPath = $path;
@@ -115,34 +112,34 @@ class GopherStream {
 	}
 
 	public function stream_read($count) {
-		return fread($this->client, $count);
+		return fread($this->socket, $count);
 	}
 
 	public function stream_seek($offset, $whence = SEEK_SET) {
-		return fseek($this->client, $offset, $whence);
+		return fseek($this->socket, $offset, $whence);
 	}
 
 	public function stream_set_option($option, $arg1, $arg2) {
 		switch ($option) {
 			case STREAM_OPTION_BLOCKING:
-				return stream_set_blocking($this->client, $arg1);
+				return stream_set_blocking($this->socket, $arg1);
 
 			case STREAM_OPTION_READ_TIMEOUT:
-				return stream_set_timeout($this->client, $arg1, $arg2);
+				return stream_set_timeout($this->socket, $arg1, $arg2);
 
 			case STREAM_OPTION_WRITE_BUFFER:
-				return stream_set_write_buffer($this->client, $arg1, $arg2);
+				return stream_set_write_buffer($this->socket, $arg1, $arg2);
 		}
 
 		return false;
 	}
 
 	public function stream_stat() {
-		return fstat($this->client);
+		return fstat($this->socket);
 	}
 
 	public function stream_tell() {
-		return ftell($this->client);
+		return ftell($this->socket);
 	}
 
 	private static function normaliseRequest($request) {
